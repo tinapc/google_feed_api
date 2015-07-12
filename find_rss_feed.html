@@ -1,0 +1,62 @@
+<html>
+  <head>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+	    google.load("feeds", "1");
+
+		function OnLoad(keyword) {
+		  	// Query for president feeds on cnn.com
+		  	var query = keyword;
+		  	google.feeds.findFeeds(query, findDone);
+		  	google.feeds.setNumEntries(1);
+		}
+
+		function findDone(result) {
+		  // Make sure we didn't get an error.
+		  if (!result.error) {
+		    // Get content div
+		    var content = document.getElementById('feed');
+		    var html = '';
+
+		    // Loop through the results and print out the title of the feed and link to
+		    // the url.
+		    for (var i = 0; i < result.entries.length; i++) {
+		      var entry = result.entries[i];
+		      html += '<p><a href="' + entry.url + '">' + entry.title + '</a></p>';
+		    }
+		    content.innerHTML = html;
+		  }
+		}
+
+		//google.setOnLoadCallback(OnLoad);
+		$(document).ready(function() {
+			$('#key').keypress(function(event) {
+				$('#feed').text('Loading...');
+				OnLoad($('#key').val());
+				google.setOnLoadCallback(OnLoad);
+			});
+		});
+
+    </script>
+
+    <style type="text/css">
+    .form {
+    	max-width: 200px;
+  		margin: 0 auto;
+    }
+    .form input {
+    	width: 100%;
+  		padding: 5px 10px;
+    }
+    </style>
+
+  </head>
+  <body>
+  	<div class="form">
+  		<input type="text" id="key" placeholder="Enter your keyword"/>
+  	</div>
+    <div id="feed"></div>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+  <head>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+	    google.load("feeds", "1");
+
+		function initialize(url_feed, num_entry) {
+	      	var feed = new google.feeds.Feed(url_feed);
+	      		feed.setNumEntries(num_entry);
+	      	feed.load(function(result) {
+		        if (!result.error) {
+		          	var container = document.getElementById("feed");
+		          	var a = '';
+		          	for (var i = 0; i < result.feed.entries.length; i++) {
+			            var entry = result.feed.entries[i];
+			            // var div = document.createElement("div");
+			            // div.appendChild(document.createTextNode("<a href='"+entry.link+"'>'"+entry.title+"'</a>"));
+			            
+			            a +='<a href="'+entry.link+'">' +entry.title+'</a><br>';
+			            container.innerHTML = a;
+		          	}
+		        }
+	      	});
+	    }
+	    //google.setOnLoadCallback(initialize);
+
+		$(document).ready(function(e) {
+			$('#key, #num_entry').bind('keypress', function(e) {
+			    if(e.keyCode==13){
+			    	$('#feed').empty();
+			    	initialize( $('#key').val(), ($('#num_entry').val() == '') ? 4 : $('#num_entry').val() );
+					google.setOnLoadCallback(initialize);
+			    }
+			});
+
+		});
+
+    </script>
+
+    <style type="text/css">
+	    .form {
+	    	max-width: 500px;
+	  		margin: 0 auto;
+	    }
+	    .form input {
+	    	width: 100%;
+	  		padding: 5px 10px;
+	    }
+	    #feed{
+	    		max-width: 1100px;
+			  margin: 0 auto;
+			  margin-top: 30px;
+			  border-top: 2px solid #ddd;
+			  padding-top: 20px;
+	    }
+    </style>
+
+  </head>
+  <body>
+  	<div class="form">
+  		<input type="text" id="key" placeholder="Feed Url: http://feeds.feedburner.com/foxnews/latest"/> <br><br>
+  		<input type="text" id="num_entry" value="" placeholder="Enter num of entry"/>
+  	</div>
+    <div id="feed"></div>
+  </body>
+</html>
