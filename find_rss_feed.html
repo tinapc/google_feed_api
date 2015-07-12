@@ -32,7 +32,7 @@
 
 		//google.setOnLoadCallback(OnLoad);
 		$(document).ready(function() {
-			$('#key').keypress(function(event) {
+			$('#key').keyup(function(event) {
 				$('#feed').text('Loading...');
 				OnLoad($('#key').val());
 				google.setOnLoadCallback(OnLoad);
